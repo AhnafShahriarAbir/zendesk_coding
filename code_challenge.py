@@ -28,12 +28,14 @@ class CodingChallenge():
             response = requests.get(url, auth=(
                 datastore["email"], datastore["password"]))
         
+        # runs if status code is 200 which means some data received from
+        # the response with valid credentials
         if response.status_code == 200:
             print('Found ticket')
             data = json.loads(response.text)
 
-            # gets id from data and convert the integer to string 
-            # for using in strings
+            # gets id from data and convert the integer to string
+            # for using in strings and asssigning to variables
             ticket_id = str(data['ticket']['id'])
             assinged_by = str(data['ticket']['assignee_id'])
             subject = data['ticket']['subject']
@@ -50,11 +52,10 @@ class CodingChallenge():
                   32 * " ", "Created at", 10 * " ", "Assigned by")
             print("\n")
             
-            # print("{:5}".format(ticket_id) + "{:20}".format(subject))
-           
             string = "{:{fill}{align}{width}}"
 
-            # passing format codes as arguments
+            # passing format codes as arguments to format
+            # the output easily readable
             print(string.format(
                 ticket_id, fill='', align='<', width=13) + string.format(
                     subject, fill='', align='<', width=41) + string.format(
@@ -65,7 +66,7 @@ class CodingChallenge():
             print('No Result found. Please Try Again!!!')
            
     def display_menu(self):
-        # This is the main display menu 
+        # This is the main display menu
         print("")
         print(30 * " ", "Welcome to Mobile Ticket viewer", 30 * " ")
         print("Please select an option from below:\n")
@@ -76,12 +77,13 @@ class CodingChallenge():
     def menu(self):
         # clears out the screen everytime method menu is called
         os.system('cls||clear')
+        
         while True:
-           
             self.display_menu()
             choice = input("Enter your choice: ")
             if choice == "1":
                 self.get_ticket()
+
             elif choice == "2":
                 print("Chose 2")
 
