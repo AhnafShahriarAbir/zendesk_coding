@@ -6,7 +6,6 @@
 
 import os
 import requests
-import sys
 import time
 import json
 from datetime import datetime
@@ -64,6 +63,63 @@ class CodingChallenge():
 
         elif response.status_code == 404:
             print('No Result found. Please Try Again!!!')
+    
+    def get_all_tickets(self):
+    
+        # reads the credentials from credentials.json file as read option
+        with open("credentials.json", 'r') as f:
+
+            # store values in credentials.json in a variable datastore
+            datastore = json.load(f)
+
+            # subdomain, email and password gets filled 
+            # from values of credentials.json
+            url = "https://"+datastore[
+                "subdomain"]+".zendesk.com/api/v2/tickets.json"
+            response = requests.get(url, auth=(
+                datastore["email"], datastore["password"]))
+        
+        # runs if status code is 200 which means some data received from
+        # the response with valid credentials
+        if response.status_code == 200:
+            print('Found ticket')
+            data = json.loads(response.text)
+
+            print("\n")
+            print("Ticket Id", 2 * " ", "Subject",
+                  41 * " ", "Created at", 10 * " ", "Assigned by")
+            print(100 * "_")
+            print("\n")
+            
+            array_length = len(data['tickets'])
+            for tickets in data['tickets']:
+                # gets id from data and convert the integer to string
+                # for using in strings and asssigning to variables
+                ticket_id = str(tickets['id'])
+                assinged_by = str(tickets['assignee_id'])
+                subject = tickets['subject']
+
+                # gets created_at from data json and formats into date format
+                # and then converts into strings. ps. use of T and Z
+                # is for satification of the format
+                # received by data json
+                created_at = str(datetime.strptime(
+                    tickets['created_at'], '%Y-%m-%dT%H:%M:%SZ'))
+                string = "{:{fill}{align}{width}}"
+
+                if tickets['id'] > 25:
+                    break
+                # passing format codes as arguments to format
+                # the output easily readable
+                print(string.format(
+                    ticket_id, fill='', align='<', width=13) + string.format(
+                        subject, fill='', align='<', width=50) + string.format(
+                        created_at, fill='', align='<', width=22) +
+                        string.format(
+                        assinged_by, fill='', align='<', width=14))
+
+        elif response.status_code == 404:
+            print('No Result found. Please Try Again!!!')
            
     def display_menu(self):
         # This is the main display menu
@@ -82,14 +138,14 @@ class CodingChallenge():
             self.display_menu()
             choice = input("Enter your choice: ")
             if choice == "1":
-                self.get_ticket()
+                self.get_all_tickets()
 
             elif choice == "2":
-                print("Chose 2")
+                self.get_ticket()
 
             elif choice == "q" or choice == "Q":
                 print("\nThanks for visiting. :)\n")
-                sys.exit()
+                break
 
             else:
                 print("""\nInvalid selection!!!! please enter number 1, 2 or enter q or Q to Quit""")
