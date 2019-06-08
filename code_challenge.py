@@ -81,6 +81,7 @@ class CodingChallenge():
         
         # runs if status code is 200 which means some data received from
         # the response with valid credentials
+
         if response.status_code == 200:
             print('Found ticket')
             data = json.loads(response.text)
@@ -90,8 +91,10 @@ class CodingChallenge():
                   41 * " ", "Created at", 10 * " ", "Assigned by")
             print(100 * "_")
             print("\n")
-            
+                
+            counter = 0
             array_length = len(data['tickets'])
+
             for tickets in data['tickets']:
                 # gets id from data and convert the integer to string
                 # for using in strings and asssigning to variables
@@ -106,9 +109,7 @@ class CodingChallenge():
                 created_at = str(datetime.strptime(
                     tickets['created_at'], '%Y-%m-%dT%H:%M:%SZ'))
                 string = "{:{fill}{align}{width}}"
-
-                if tickets['id'] > 25:
-                    break
+      
                 # passing format codes as arguments to format
                 # the output easily readable
                 print(string.format(
@@ -117,7 +118,7 @@ class CodingChallenge():
                         created_at, fill='', align='<', width=22) +
                         string.format(
                         assinged_by, fill='', align='<', width=14))
-
+               
         elif response.status_code == 404:
             print('No Result found. Please Try Again!!!')
            
