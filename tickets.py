@@ -6,9 +6,9 @@ from datetime import datetime
 
 
 class Ticket():
-    data = ""
-
+    
     def get_data_from_url(self):
+  
         # reads the credentials from credentials.json file as read option
         with open("credentials.json", 'r') as f:
 
@@ -26,15 +26,15 @@ class Ticket():
         # the response with valid credentials
         if response.status_code == 200:
             data = json.loads(response.text)
+            return data
 
-        elif response.status_code == 404:
+        else:
             print("\nRequest failed. Please check and try Again!!!\n")
-            time.sleep(2)
-            data = None
+            time.sleep(4)
 
         # returns data with json output or None which will be used
         # in get_ticket method
-        return data
+       
 
     # This method asks for ticket id first, validates the ticket id,
     # looks through the data
@@ -72,7 +72,7 @@ class Ticket():
 
                 for ticket in tickets:
                     if ticket_id == str(ticket['id']):
-                        os.system('cls||clear')
+                        os.system('clear')
                         print("\n")
                         print("Ticket Id", 2 * " ", "Subject",
                               41 * " ", "Created at", 10 * " ", "Assigned by")
@@ -88,7 +88,7 @@ class Ticket():
                 choice = input("Enter your choice: ")
                 if choice == "y":
                     # clears out the screen everytime method menu is called
-                    os.system('cls||clear')
+                    os.system('clear')
                     continue
 
                 elif choice == "n":
@@ -151,7 +151,7 @@ class Ticket():
             choice = input("Enter your choice: ")
             if choice == "y":
                 # clears out the screen everytime method menu is called
-                os.system('cls||clear')
+                os.system('clear')
                 continue
 
             elif choice == "n":
@@ -169,3 +169,4 @@ class Ticket():
                 self.show_ticket(ticket)
                 print("Counter: " + str(counter))
         return counter
+    

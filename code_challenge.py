@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # This is the main code to the code challenge
 # used python3
 # install pip3 install requests
@@ -13,7 +14,7 @@ class CodingChallenge():
     def display_menu(self):
         # This is the main display menu
         # clears out the screen everytime method is called
-        os.system('cls||clear')
+        os.system('clear')
         print("")
         print(30 * " ", "Welcome to Mobile Ticket viewer", 30 * " ")
         print("Please select an option from below:\n")
@@ -23,21 +24,21 @@ class CodingChallenge():
 
     def menu(self):
         # clears out the screen everytime method menu is called
-        os.system('cls||clear')
+        os.system('clear')
 
         while True:
             self.display_menu()
             choice = input("Enter your choice: ")
             if choice == "1":
                 # clears out the screen everytime method is called
-                os.system('cls||clear')
+                os.system('clear')
 
                 # calls get_all_tickets from tickets.py file
                 tickets.get_all_tickets()
 
             elif choice == "2":
                 # clears out the screen everytime method is called
-                os.system('cls||clear')
+                os.system('clear')
 
                 # calls get_ticket from tickets.py file
                 tickets.get_ticket()
@@ -51,7 +52,7 @@ class CodingChallenge():
                     """\nInvalid selection!!!! please enter number 1, 2 or enter q or Q to Quit""")
                 time.sleep(3)
                 # clears out the screen everytime method is called
-                os.system('cls||clear')
+                os.system('clear')
 
 
 if __name__ == '__main__':
