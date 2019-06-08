@@ -2,6 +2,7 @@ import os
 import requests
 import time
 import json
+import sys
 from datetime import datetime
 
 
@@ -85,6 +86,7 @@ class Ticket():
                 print("\n" + 5 * "-", "Search again" + 5 * "-"+"\n")
                 print("1. Yes (type y to search ticket again) ")
                 print("2. No (type n to go to Home page) ")
+                print("3. Quit (type q or Q to Quit) ")
                 choice = input("Enter your choice: ")
                 if choice == "y":
                     # clears out the screen everytime method menu is called
@@ -93,6 +95,9 @@ class Ticket():
 
                 elif choice == "n":
                     break
+                elif choice == "q" or choice == "Q":
+                    print("\nThanks for visiting. :)\n")
+                    sys.exit()
                 else:
                     print(
                         """\nInvalid selection!!!! Returning to home page""")
