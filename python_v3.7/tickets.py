@@ -35,6 +35,7 @@ class Ticket():
                 except ValueError:
                     print("\nPlease enter number only\n")
                     time.sleep(1)
+                    os.system('clear')
                     continue
                 # if the input lies within the range, then loop breaks
                 if 1 <= value <= data_length:
@@ -44,6 +45,7 @@ class Ticket():
                         "\nInvalid range..You have only " + str(data_length) +
                         " Tickets...\n")
                     time.sleep(1)
+                    os.system('clear')
 
             os.system('clear')
 

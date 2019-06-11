@@ -1,7 +1,5 @@
 #!/usr/bin/env python
-
-# install pip3 install requests
-
+# install pip install requests
 
 from tickets import Ticket
 import os
@@ -9,7 +7,7 @@ import time
 
 
 # This is the main code to the code challenge
-# Contains:
+
 class CodingChallenge():
     def display_menu(self):
         # This is the main display menu
