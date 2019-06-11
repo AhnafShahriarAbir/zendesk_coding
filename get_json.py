@@ -8,7 +8,13 @@ class GetJSON():
     def __init__(self):
         self.TOTAL_PER_PAGE = 25
         self.params = {"per_page": self.TOTAL_PER_PAGE, "page": 1}
+    
+    def get_total_per_page(self):
+        return self.TOTAL_PER_PAGE
 
+    def get_params(self):
+        return self.params
+        
     def get_data_from_url(self):
         # reads the credentials from credentials.json file as read option
         with open("credentials.json", 'r') as f:
@@ -47,4 +53,4 @@ class GetJSON():
             return data
         else:
             print("\nRequest failed. Please check and try Again!!!\n")
-            time.sleep(4)
+            time.sleep(2)

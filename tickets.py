@@ -53,16 +53,21 @@ class Ticket():
                 print("Could not retrieve the ticket!!! Please try again")
             
             print("\n" + 5 * "-", "Search again" + 5 * "-"+"\n")
-            print("1. Yes (type y to search ticket again) ")
-            print("2. No (type n to go to Home page) ")
-            print("3. Quit (type q or Q to Quit) ")
-            choice = input("Enter your choice: ")
-            if choice == "y":
+            print("1. Yes (type 1 to search ticket again) ")
+            print("2. No (type 2 to go to Home page) ")
+            print("\nQuit (type q or Q to Quit) ")
+
+            choice = input("\nEnter your choice: ")
+            if choice == "1":
                 os.system('clear')
                 continue
 
-            elif choice == "n":
+            elif choice == "2":
+                os.system('clear')
+                print("Returning to Home Page.............")
+                time.sleep(1)
                 break
+                
             elif choice == "q" or choice == "Q":
                 print("\nThanks for visiting. :)\n")
                 sys.exit()
@@ -78,6 +83,7 @@ class Ticket():
             array_length = len(data['tickets'])
             tickets = data['tickets']
             next_page = data['next_page']
+            prev_page = data['previous_page']
 
             # clears out the screen everytime method menu is called
             os.system('clear')
@@ -87,11 +93,14 @@ class Ticket():
             self.title()
             self.print_tickets(tickets, getJson.params['page'])
 
-            print("\nView next Page\n")
-            print("1. Yes (type y to view next page) ")
-            print("2. No (type n to go to Home page) ")
-            choice = input("Enter your choice: ")
-            if choice == "y":
+            print("\n\nOPTIONS\n")
+            print("1. View next Page (Enter 1 to view next page) ")
+            print("2. View Previous Page (Enter 2 to view previous page) ")
+            print("3. No (type 3 to go to Home page) ")
+            print("\nQuit (type q or Q to Quit) ")
+
+            choice = input("\nEnter your choice: ")
+            if choice == "1":
                 if next_page is None:
                     os.system('clear')
                     print('No more pages left')
@@ -101,15 +110,31 @@ class Ticket():
                     os.system('clear')
                     print("loading.............")
                     getJson.params['page'] += 1
-                    
-            elif choice == "n":
+
+            elif choice == "2":
+                if prev_page is None:
+                    os.system('clear')
+                    print('This is the first page.')
+                    time.sleep(1)
+
+                else:
+                    os.system('clear')
+                    print("loading.............")
+                    getJson.params['page'] -= 1
+
+            elif choice == "3":
                 os.system('clear')
                 print("Returning to Home Page.............")
                 time.sleep(1)
                 break
+            elif choice == "q" or choice == "Q":
+                print("\nThanks for visiting. :)\n")
+                sys.exit()
+
             else:
                 print(
-                    "\nInvalid selection!!!! please enter \"y\" or \"n\" ")
+                    "\nInvalid selection!!!! please enter \"1,2,3\" or \"q/Q\""
+                        )
                 time.sleep(2)
 
     def print_tickets(self, tickets, page):
