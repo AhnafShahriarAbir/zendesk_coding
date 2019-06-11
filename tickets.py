@@ -33,10 +33,7 @@ class Ticket():
             print("\nRequest failed. Please check and try Again!!!\n")
             time.sleep(4)
 
-        # returns data with json output or None which will be used
-        # in get_ticket method
        
-
     # This method asks for ticket id first, validates the ticket id,
     # looks through the data
     # in tickets.json and displays the ticket with
@@ -105,8 +102,8 @@ class Ticket():
                     break
 
     def get_all_tickets(self):
-        pass
-        # self.show_tickets(data)
+        data = self.get_data_from_url()
+        self.show_tickets(data)
 
     def show_ticket(self, ticket):
         ticket_id = str(ticket['id'])
@@ -167,11 +164,13 @@ class Ticket():
         print("Played All tickets. Returned to home page")
 
     def show_pages(self, tickets, counter, max):
-        for ticket in tickets:
-            for counter in range(counter, max+1, 1):
-                # gets id from data and convert the integer to string
-                # for using in strings and asssigning to variables
+        for counter in range(counter, max+1, 1):
+            for ticket in tickets:
+            # gets id from data and convert the integer to string
+            # for using in strings and asssigning to variables
+             
                 self.show_ticket(ticket)
-                print("Counter: " + str(counter))
+
+            print("Counter: " + str(counter))
         return counter
     
