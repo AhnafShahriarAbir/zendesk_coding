@@ -5,6 +5,7 @@ import requests
 import unittest.mock
 import tickets
 from tickets import Ticket
+from get_json import GetJSON
 
 
 class TestCodes(unittest.TestCase):
@@ -43,7 +44,11 @@ class TestCodes(unittest.TestCase):
         mocked_input.side_effect = [3]
         code_challenge.CodingChallenge.menu
         self.assertTrue("\nThanks for visiting. :)\n")
- 
+    
+    def test_total_per_page(self):
+        getJson = GetJSON
+        getJson.TOTAL_PER_PAGE
+
 if __name__ == "__main__":
     unittest.main()
     

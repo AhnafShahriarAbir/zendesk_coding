@@ -1,58 +1,13 @@
 import os
-import requests
 import time
-import json
 import sys
 from datetime import datetime
-TOTAL_PAGE = 25
-params = {"per_page": TOTAL_PAGE, "page": 1}
+from get_json import GetJSON
+getJson = GetJSON()
 
 
 class Ticket():
-    def get_data_from_url(self):
-        # reads the credentials from credentials.json file as read option
-        with open("credentials.json", 'r') as f:
-            # store values in credentials.json in a variable datastore
-            datastore = json.load(f)
-
-            # subdomain, email and password gets filled
-            # from values of credentials.json
-            url = "https://"+datastore[
-                "subdomain"]+".zendesk.com/api/v2/tickets.json"
-            response = requests.get(url, params=params, auth=(
-                datastore["email"], datastore["password"]))
-            data = self.check_response(response)
-        return data
-
-    def check_response(self, response):
-        # runs if status code is 200 which means some data received from
-        # the response with valid credentials
-        if response.status_code == 200:
-            data = json.loads(response.text)
-            return data
-        else:
-            print("\nRequest failed. Please check and try Again!!!\n")
-            time.sleep(4)
-    
-    def get_one_ticket_from_url(self, id):
-        # reads the credentials from credentials.json file as read option
-        with open("credentials.json", 'r') as f:
-            # store values in credentials.json in a variable datastore
-            datastore = json.load(f)
-
-            # subdomain, email and password gets filled
-            # from values of credentials.json
-            url = "https://"+datastore[
-                "subdomain"]+".zendesk.com/api/v2/tickets/"+id+".json"
-            response = requests.get(url, auth=(
-                datastore["email"], datastore["password"]))
-            data = self.check_response(response)
-            
-        return data
-
     def title(self):
-        # clears out the screen everytime method menu is called
-        os.system('clear')
         print("Ticket Id", 2 * " ", "Subject",
               41 * " ", "Created at", 10 * " ", "Assigned by")
         print(100 * "_")
@@ -63,6 +18,8 @@ class Ticket():
     # in tickets.json and displays the ticket with
     # that inputted ticket id.
     def get_ticket(self):
+        data = getJson.get_data_from_url()
+        data_length = data['count']
         while True:
 
             # runs until a valid ticket number is entered
@@ -75,23 +32,23 @@ class Ticket():
                     value = int(ticket_id)
                 except ValueError:
                     print("\nPlease enter number only\n")
-                    time.sleep(2)
+                    time.sleep(1)
                     continue
                 # if the input lies within the range, then loop breaks
-                # if 1 <= value <= array_length:
-                #     break
-                # else:
-                #     print(
-                #         "\nInvalid range..You have only " + " Tickets...\n")
-                #     time.sleep(2)
-                else:
+                if 1 <= value <= data_length:
                     break
-            ticket = self.get_one_ticket_from_url(ticket_id)
+                else:
+                    print(
+                        "\nInvalid range..You have only " + str(data_length) +
+                        " Tickets...\n")
+                    time.sleep(1)
+
+            os.system('clear')
+            data = getJson.get_one_ticket_from_url(ticket_id)
+            ticket = data['ticket']
             if ticket is not None:
-                for t in ticket:
-                    print(t)
-                    # self.title()
-                    # self.show_ticket(ticket)
+                self.title()
+                self.show_ticket(ticket)
             else:
                 print("Could not retrieve the ticket!!! Please try again")
             
@@ -101,7 +58,6 @@ class Ticket():
             print("3. Quit (type q or Q to Quit) ")
             choice = input("Enter your choice: ")
             if choice == "y":
-                # clears out the screen everytime method menu is called
                 os.system('clear')
                 continue
 
@@ -117,12 +73,8 @@ class Ticket():
                 break
 
     def get_all_tickets(self):
-       
-        # if array_length > 25:
-        #     for ticket in tickets:
-        #         self.show_pages(tickets, counter, counter+25)
         while True:
-            data = self.get_data_from_url()
+            data = getJson.get_data_from_url()
             array_length = len(data['tickets'])
             tickets = data['tickets']
             next_page = data['next_page']
@@ -130,10 +82,10 @@ class Ticket():
             # clears out the screen everytime method menu is called
             os.system('clear')
 
-            print(5*"-", "\nPage: {}".format(params['page']))
+            print("\nPage: {}".format(getJson.params['page']))
             print(9*"-")
             self.title()
-            self.print_tickets(tickets, params['page'])
+            self.print_tickets(tickets, getJson.params['page'])
 
             print("\nView next Page\n")
             print("1. Yes (type y to view next page) ")
@@ -148,7 +100,7 @@ class Ticket():
                 else:
                     os.system('clear')
                     print("loading.............")
-                    params['page'] += 1
+                    getJson.params['page'] += 1
                     
             elif choice == "n":
                 os.system('clear')
@@ -161,31 +113,24 @@ class Ticket():
                 time.sleep(2)
 
     def print_tickets(self, tickets, page):
-        start = page*TOTAL_PAGE - 24
+        start = page*getJson.TOTAL_PER_PAGE - 24
 
         for ticket in tickets:
             self.show_ticket(ticket)
             start += 1
         return
 
-    def get_id_from_user(self, id):
-        data = self.get_data_from_url()
-        tickets = data['tickets']
-        for ticket in tickets:
-            if id == ticket['id']:
-                return ticket
-
     def show_ticket(self, ticket):
-        ticket_id = ticket['ticket']["id"]
-        assinged_by = str(ticket['ticket']['assignee_id'])
-        subject = ticket['ticket']['subject']
+        ticket_id = ticket["id"]
+        assinged_by = str(ticket['assignee_id'])
+        subject = ticket['subject']
 
         # gets created_at from data json and formats into date format
         # and then converts into strings. ps. use of T and Z
         # is for satification of the format
         # received by data json
         created_at = str(datetime.strptime(
-            ticket['ticket']['created_at'], '%Y-%m-%dT%H:%M:%SZ'))
+            ticket['created_at'], '%Y-%m-%dT%H:%M:%SZ'))
         string = "{:{fill}{align}{width}}"
 
         # passing format codes as arguments to format
