@@ -54,9 +54,9 @@ For python 2
 </p>
 
  
-### Installing
-## For python 2.7
-## (This procudures are for macOS only!)
+## Installing
+### For python 2.7
+### (This procudures are for macOS only!)
 After installing python 2.7, please install the following libraries in terminal. 
 
 Update the pip first to latest version.
@@ -131,6 +131,11 @@ to run the main program.
 
 ## Running the tests
 
+This program is tested on 
+- macOS Mojave with both
+   - python 2
+   - python 3
+   
 To run the test, type
 ```
 python test_codes.py
