@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
-# This is the main code to the code challenge
-# used python3
+
 # install pip3 install requests
-# https://ahnaf.zendesk.com/api/v2/tickets/102.json -v -
-# u abir3577189@gmail.com:15589633Ab
+
 
 from tickets import Ticket
 import os
 import time
 
 
+# This is the main code to the code challenge
+# Contains:
 class CodingChallenge():
     def display_menu(self):
         # This is the main display menu
@@ -27,31 +27,30 @@ class CodingChallenge():
         os.system('clear')
 
         while True:
+            # displays the main menu in the console
             self.display_menu()
-            choice = input("Enter your choice: ")
+            choice = input("Enter your choice(1,2,3 or q/Q): ")
             if choice == "1":
-                # clears out the screen everytime method is called
                 os.system('clear')
 
-                # calls get_all_tickets from tickets.py file
+                # calls get_all_tickets from tickets.py file to receive all tickets
                 tickets.get_all_tickets()
 
             elif choice == "2":
-                # clears out the screen everytime method is called
                 os.system('clear')
 
-                # calls get_ticket from tickets.py file
+                # calls get_ticket from tickets.py file to get a single ticket
                 tickets.get_ticket()
 
             elif choice == "q" or choice == "Q":
                 print("\nThanks for visiting. :)\n")
+                # Quits the main console-based menu
                 break
 
             else:
                 print(
                     """\nInvalid selection!!!! please enter number 1, 2 or enter q or Q to Quit""")
                 time.sleep(3)
-                # clears out the screen everytime method is called
                 os.system('clear')
 
 

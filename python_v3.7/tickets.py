@@ -1,6 +1,7 @@
 import os
 import time
 import sys
+# imports datetime to reformat the created data received from json
 from datetime import datetime
 from get_json import GetJSON
 getJson = GetJSON()
@@ -14,17 +15,18 @@ class Ticket():
         print("\n")
 
     # This method asks for ticket id first, validates the ticket id,
-    # looks through the data
-    # in tickets.json and displays the ticket with
-    # that inputted ticket id.
+    # calls "get_one_ticket_from_url" from GetJSON class
+    # and displays the ticket with that inputted ticket id.
+
     def get_ticket(self):
+        # gets all the tickets to get the count of tickets
         data = getJson.get_data_from_url()
         data_length = data['count']
-        while True:
 
+        while True:
             # runs until a valid ticket number is entered
             while True:
-                print("Please Enter the Ticket id to get the ticket.\n ")
+                print("\nPlease Enter the Ticket id to get the ticket.\n ")
                 ticket_id = input('Enter Ticket ID: ')
                 try:
                     # tries to convert the input into int throws
@@ -44,13 +46,15 @@ class Ticket():
                     time.sleep(1)
 
             os.system('clear')
+
+            # gets data of a single ticket with validated ticket id
             data = getJson.get_one_ticket_from_url(ticket_id)
             ticket = data['ticket']
             if ticket is not None:
                 self.title()
-                self.show_ticket(ticket)
+                self.show_ticket(ticket)  # displays the ticket
             else:
-                print("Could not retrieve the ticket!!! Please try again")
+                print("\nCould not retrieve the ticket!!! Please try again")
             
             print("\n" + 5 * "-", "Search again" + 5 * "-"+"\n")
             print("1. Yes (type 1 to search ticket again) ")
@@ -77,6 +81,11 @@ class Ticket():
                 time.sleep(2)
                 break
 
+    # This method is used to get all tickets.
+    # First,all the data is received as json format.
+    # variables are set from the data received,
+    # calls "print_tickets" until the user doesn't quit or t
+    # here is no more data.
     def get_all_tickets(self):
         while True:
             data = getJson.get_data_from_url()
@@ -85,18 +94,18 @@ class Ticket():
             next_page = data['next_page']
             prev_page = data['previous_page']
 
-            # clears out the screen everytime method menu is called
             os.system('clear')
 
             print("\nPage: {}".format(getJson.params['page']))
             print(9*"-")
             self.title()
+            # prints tickets with page from params
             self.print_tickets(tickets, getJson.params['page'])
 
             print("\n\nOPTIONS\n")
             print("1. View next Page (Enter 1 to view next page) ")
             print("2. View Previous Page (Enter 2 to view previous page) ")
-            print("3. No (type 3 to go to Home page) ")
+            print("3. Return to Home Page (type 3 to go to Home page) ")
             print("\nQuit (type q or Q to Quit) ")
 
             choice = input("\nEnter your choice: ")
@@ -114,7 +123,8 @@ class Ticket():
             elif choice == "2":
                 if prev_page is None:
                     os.system('clear')
-                    print('This is the first page.')
+                    print('\nCan\'t go further!!!!!!!')
+                    print('You are already in the first page.')
                     time.sleep(1)
 
                 else:
@@ -137,12 +147,13 @@ class Ticket():
                         )
                 time.sleep(2)
 
+    # This method loops through all the tickets and displays
+    # in individual page
     def print_tickets(self, tickets, page):
-        start = page*getJson.TOTAL_PER_PAGE - 24
-
+        page_count = page*getJson.TOTAL_PER_PAGE
         for ticket in tickets:
             self.show_ticket(ticket)
-            start += 1
+            page_count += 1
         return
 
     def show_ticket(self, ticket):

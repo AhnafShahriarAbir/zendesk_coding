@@ -5,6 +5,9 @@ import time
 
 
 class GetJSON():
+    # Initialises with total_per_page and params
+    # changing total_per_page will changes the output of tickets
+    # shown in per page
     def __init__(self):
         self.TOTAL_PER_PAGE = 25
         self.params = {"per_page": self.TOTAL_PER_PAGE, "page": 1}
